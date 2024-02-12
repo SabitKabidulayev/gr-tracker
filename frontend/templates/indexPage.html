@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie-tracker</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container header-container">
+            <a class="main-title" href="/">Groupie-tracker</a>
+        </header>
+        <main class="container main-container">
+            <div class="artists-list">
+                {{range . }}
+                <a href="/artist?id={{.ID}}">
+                    <img class="artist-image" src="{{ .Image}}" alt="">
+                    <p class="artist-name">{{.Name }}</p>
+                </a>
+                {{end}}
+            </div>
+        </main>
+        <footer>
+            <div class="footer-links">
+                <a href="https://01.alem.school/git/skabidul">skabidul</a>
+                <a href="https://01.alem.school/git/abolat">abolat</a>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
