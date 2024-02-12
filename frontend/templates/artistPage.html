@@ -31,26 +31,25 @@
                     <div>
                         <h2>Members:</h2>
                         {{range $members := .Members}}
-                        <div>
-                            {{$members}}
-                        </div>
+                        <ul>
+                            <li>{{$members}}</li>
+                        </ul>
                         {{end}}
                     </div>
                     <div>
                         <h2>Locations:</h2>
                         {{range $location := .Locations.Location}}
-                        <div>
-                            {{$location}}
-                        </div>
+                        <ul>
+                            <li>{{$location}}</li>
+                        </ul>
                         {{end}}
                     </div>
                 </div>
             </div>
         </main>
         <footer class="container footer-container">
-            <div class="footer-links">
-                <a class="git-link" href="https://01.alem.school/git/skabidul" target="_blank">skabidul</a>
-                <a class="git-link" href="https://01.alem.school/git/abolat" target="_blank">abolat</a>
+            <div class="back-to-top">
+                <a class="back-to-top-link" href="/">Back to main page</a>
             </div>
         </footer>
     </div>
