@@ -9,42 +9,51 @@
 </head>
 
 <body>
-    <header>
-        <div>
-            <a href="/">Groupie-tracker</a>
-            <div>
-    </header>
-    <main>
-        <div class="artist">
-            <img src="{{.Image}}" alt="">
-            <h1>
-                {{.Name}}
-            </h1>
-            <h2>CreationDate:</h2>
-            <p>{{.CreationDate}}</p>
-            <h2>FirstAlbum:</h2>
-            <p>{{.FirstAlbum}}</p>
-
-            <h2>Members:</h2>
-            {{range $members := .Members}}
-            <div>
-                {{$members}}
+    <div class="wrapper">
+        <header class="container header-container">
+            <a class="main-title" href="/">Groupie-tracker</a>
+        </header>
+        <main class="container main-container">
+            <div class="artist-info">
+                <div class="cover-and-name">
+                    <img class="cover" src="{{.Image}}" alt="">
+                    <h1 class="name">
+                        {{.Name}}
+                    </h1>
+                </div>
+                <div class="other-info">
+                    <div>
+                        <h2>CreationDate:</h2>
+                        <p>{{.CreationDate}}</p>
+                        <h2>FirstAlbum:</h2>
+                        <p>{{.FirstAlbum}}</p>
+                    </div>
+                    <div>
+                        <h2>Members:</h2>
+                        {{range $members := .Members}}
+                        <div>
+                            {{$members}}
+                        </div>
+                        {{end}}
+                    </div>
+                    <div>
+                        <h2>Locations:</h2>
+                        {{range $location := .Locations.Location}}
+                        <div>
+                            {{$location}}
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
             </div>
-            {{end}}
-            <h2>Locations:</h2>
-            {{range $location := .Locations.Location}}
-            <div>
-                {{$location}}
+        </main>
+        <footer class="container footer-container">
+            <div class="footer-links">
+                <a class="git-link" href="https://01.alem.school/git/skabidul" target="_blank">skabidul</a>
+                <a class="git-link" href="https://01.alem.school/git/abolat" target="_blank">abolat</a>
             </div>
-            {{end}}
-        </div>
-    </main>
-    <footer>
-        <div class="footer-links">
-            <a href="https://01.alem.school/git/skabidul">skabidul</a>
-            <a href="https://01.alem.school/git/abolat">abolat</a>
-        </div>
-    </footer>
+        </footer>
+    </div>
 </body>
 
 </html>

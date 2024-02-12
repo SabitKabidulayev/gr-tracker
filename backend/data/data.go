@@ -14,17 +14,17 @@ const (
 )
 
 func GetData() (models.AllArtists, error) {
-	req, err := http.Get(artistsApiURL)
+	art, err := http.Get(artistsApiURL)
 	if err != nil {
 		return nil, err
 	}
-	defer req.Body.Close()
+	defer art.Body.Close()
 
-	loc, err := http.Get(locationsApiURL)
+	lctn, err := http.Get(locationsApiURL)
 	if err != nil {
 		return nil, err
 	}
-	defer loc.Body.Close()
+	defer lctn.Body.Close()
 
 	date, err := http.Get(datesApiURL)
 	if err != nil {
@@ -32,15 +32,15 @@ func GetData() (models.AllArtists, error) {
 	}
 	defer date.Body.Close()
 
-	relation, err := http.Get(relationApiURL)
+	rltn, err := http.Get(relationApiURL)
 	if err != nil {
 		return nil, err
 	}
-	defer relation.Body.Close()
+	defer rltn.Body.Close()
 
 	var artists models.AllArtists
 
-	err = json.NewDecoder(req.Body).Decode(&artists)
+	err = json.NewDecoder(art.Body).Decode(&artists)
 	if err != nil {
 		return artists, err
 	}
@@ -50,15 +50,16 @@ func GetData() (models.AllArtists, error) {
 		location      models.IndexLocations
 		dates         models.IndexConcerts
 	)
+
 	err = json.NewDecoder(date.Body).Decode(&dates)
 	if err != nil {
 		return nil, err
 	}
-	err = json.NewDecoder(loc.Body).Decode(&location)
+	err = json.NewDecoder(lctn.Body).Decode(&location)
 	if err != nil {
 		return nil, err
 	}
-	err = json.NewDecoder(relation.Body).Decode(&locationDates)
+	err = json.NewDecoder(rltn.Body).Decode(&locationDates)
 	if err != nil {
 		return nil, err
 	}

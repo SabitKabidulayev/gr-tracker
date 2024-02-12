@@ -7,7 +7,9 @@
 }
 
 /* прижать футер к низу */
-html, body, .wrapper {
+html,
+body,
+.wrapper {
     height: 100%;
 }
 
@@ -19,6 +21,7 @@ html, body, .wrapper {
 main {
     flex-grow: 1;
 }
+
 /* прижать футер к низу */
 
 a {
@@ -34,10 +37,117 @@ a {
 
 .header-container {
     text-align: center;
+    border-top: solid black 4px;
+    border-bottom: solid black 4px;
+    padding: 0;
 }
 
 .main-title {
     display: block;
     font-family: "Bebas Neue", sans-serif;
     font-size: 64px;
+}
+
+.main-title:hover {
+    background-color: yellow;
+}
+
+.artists-list {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.artist-card {
+    text-align: center;
+    border: 4px solid black
+}
+
+.artist-card:hover {
+    background-color: yellow;
+}
+
+.artist-image {
+    width: 200px;
+    border-bottom: solid black 4px;
+}
+
+.artist-name {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 24px;
+}
+
+.back-to-top {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.back-to-top-link {
+    border-radius: 10px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+}
+
+.back-to-top-link:hover {
+    color: red;
+}
+
+.footer-container {
+    text-align: center;
+    border-top: solid black 4px;
+    border-bottom: solid black 4px;
+}
+
+.footer-links {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.git-link {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 24px;
+}
+
+.git-link:hover {
+    color: red;
+}
+
+/* ARTIST PAGE */
+
+.artist-info {
+    padding: 20px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 80px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.cover-and-name {
+    text-align: center;
+}
+
+.cover {
+    width: 300px;
+    border: solid black 4px;
+}
+
+.name {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+}
+
+.other-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-around;
+    align-items: flex-start;
 }
