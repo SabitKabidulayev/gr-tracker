@@ -2,34 +2,38 @@ package handlers
 
 import (
 	"groupie-tracker/backend/data"
-	"html/template"
+	"log"
 	"net/http"
+	"text/template"
 )
 
-func IndexPage(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		ErrorPage(w, http.StatusMethodNotAllowed)
-		return
-	}
+func Home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		ErrorPage(w, http.StatusNotFound)
+		errHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
 
-	tmpl, err := template.ParseFiles("./frontend/templates/indexPage.html")
-	if err != nil {
-		ErrorPage(w, http.StatusInternalServerError)
+	if r.Method != http.MethodGet {
+		errHandler(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
 
-	data, err := data.GetData()
+	t, err := template.ParseFiles("frontend/html/index.html")
 	if err != nil {
-		ErrorPage(w, http.StatusInternalServerError)
+		log.Println(err)
+		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
-	err = tmpl.Execute(w, data)
+
+	err = data.FetchDataFromJSON(&data.Artists, "https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
-		ErrorPage(w, http.StatusInternalServerError)
+		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		return
+	}
+
+	err = t.Execute(w, data.Artists)
+	if err != nil {
+		http.Error(w, "Error when executing", http.StatusInternalServerError)
 		return
 	}
 }

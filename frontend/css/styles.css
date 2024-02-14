@@ -1,0 +1,43 @@
+body {
+    background-color: #ddd;
+}
+
+h1 {
+    text-align: center;
+}
+
+.artist-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    font-size: medium;
+    text-align: center;
+}
+
+.artist-list li {
+    display: inline-block;
+    margin: 10px;
+    max-width: 230px; /* Adjust the maximum width as needed */
+}
+
+.artist-list a {
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    display: block;
+}
+
+.artist-list img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 5px;
+    border-radius: 8px; /* Add rounded corners for a cleaner look */
+}
+
+.artist-list .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

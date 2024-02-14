@@ -1,75 +1,63 @@
 package handlers
 
 import (
-	"errors"
-	"fmt"
 	"groupie-tracker/backend/data"
-	"groupie-tracker/backend/models"
-	"html/template"
+	"log"
 	"net/http"
 	"strconv"
-	"strings"
+	"text/template"
 )
 
 func ArtistPage(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		ErrorPage(w, http.StatusMethodNotAllowed)
-		return
-	}
-	if r.URL.Path != "/artist" {
-		ErrorPage(w, http.StatusNotFound)
+	if r.Method != http.MethodGet {
+		errHandler(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
 
-	tmpl, err := template.ParseFiles("./frontend/templates/artistPage.html")
-	if err != nil {
-		ErrorPage(w, http.StatusInternalServerError)
+	if r.URL.Path != "/artist/" {
+		errHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
 
-	data, err := GetID(w, r)
-	if err != nil {
-		if err.Error() == "404" {
-			ErrorPage(w, http.StatusNotFound)
-			return
-		}
-		ErrorPage(w, http.StatusBadRequest)
+	id := r.URL.Query().Get("id")
+
+	if !data.IsValid(id) {
+		errHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		ErrorPage(w, http.StatusInternalServerError)
+	if data.ContainsZero(id) {
+		errHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
-}
+	idd, err := strconv.Atoi(id)
 
-func GetID(w http.ResponseWriter, r *http.Request) (models.Artist, error) {
-	var artist models.Artist
-
-	id, err := CustomAtoi(r.URL.Query().Get("id"))
-	if err != nil || id < 1 {
-		return artist, fmt.Errorf("400")
-	}
-	artists, err := data.GetData()
+	err = data.FetchDataFromJSON(&data.Artists, "https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
-		return artist, fmt.Errorf("404")
-	}
-	if id > 0 && id <= len(artists) {
-		artist = artists[id-1]
-		return artist, err
+		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		return
 	}
 
-	return artist, fmt.Errorf("404")
-}
-
-func CustomAtoi(s string) (int, error) {
-	if strings.TrimLeft(s, "0") != s {
-		return 0, errors.New("Error")
+	if !data.IsRange(idd) {
+		errHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
+		return
 	}
-	n, err := strconv.Atoi(s)
+
+	err = data.AdditionalData(idd)
 	if err != nil {
-		return n, fmt.Errorf("Error")
+		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		return
 	}
-	return n, nil
+
+	t, err := template.ParseFiles("frontend/html/artist.html")
+	if err != nil {
+		log.Println(err)
+		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		return
+	}
+	err = t.Execute(w, data.Artists[idd-1])
+	if err != nil {
+		http.Error(w, "Error executin file", http.StatusInternalServerError)
+		return
+	}
 }

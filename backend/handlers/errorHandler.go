@@ -1,27 +1,31 @@
 package handlers
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"text/template"
 )
 
-type Err struct {
-	StatusCode int
+type ErrorPage struct {
+	StatusCode string
 	StatusText string
 }
 
-func ErrorPage(w http.ResponseWriter, statusCode int) {
-	w.WriteHeader(statusCode)
-	tmpl, err := template.ParseFiles("./frontend/templates/errorPage.html")
+func errHandler(w http.ResponseWriter, r *http.Request, statusCode int, statusText string) {
+	data := ErrorPage{
+		StatusCode: fmt.Sprint(statusCode),
+		StatusText: statusText,
+	}
+	t, err := template.ParseFiles("./frontend/html/errpage.html")
 	if err != nil {
-		http.Error(w, http.StatusText(statusCode), statusCode)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(http.StatusText(http.StatusInternalServerError)))
 		return
 	}
-	er := Err{statusCode, http.StatusText(statusCode)}
-	err = tmpl.Execute(w, er)
+	w.WriteHeader(statusCode)
+	err = t.Execute(w, data)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Error:", http.StatusInternalServerError)
+		http.Error(w, "Error when executing", http.StatusInternalServerError)
+		return
 	}
 }
