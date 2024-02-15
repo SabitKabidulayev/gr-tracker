@@ -43,7 +43,7 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = data.AdditionalData(idd)
+	err = data.GetDataForArtist(idd)
 	if err != nil {
 		errHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return

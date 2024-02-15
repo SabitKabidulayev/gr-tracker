@@ -47,19 +47,7 @@ func FetchDataFromJSON(data interface{}, url string) error {
 	return nil
 }
 
-// func BasicData() функция, которая перебирает срез Artist и вызывает AdditionalData для каждого артиста.
-
-func BasicData() error {
-	for i := 0; i < len(Artists); i++ {
-		err := AdditionalData(i + 1)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func AdditionalData(id int) error {
+func GetDataForArtist(id int) error {
 	location := models.StructLocations{}
 	FetchDataFromJSON(&location, "https://groupietrackers.herokuapp.com/api/locations/"+strconv.Itoa(id))
 
