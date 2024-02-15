@@ -27,7 +27,7 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if utilities.ContainsZero(id) {
+	if utilities.StartsWithZero(id) {
 		errHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}

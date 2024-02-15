@@ -22,7 +22,7 @@ func IsInRange(id int) bool {
 	return true
 }
 
-func ContainsZero(id string) bool {
+func StartsWithZero(id string) bool {
 	if id[0] == '0' {
 		return true
 	}
