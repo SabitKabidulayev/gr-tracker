@@ -152,7 +152,7 @@ func TestIsRange(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(strconv.Itoa(tt.id), func(t *testing.T) {
-			result := utilities.IsRange(tt.id)
+			result := utilities.IsInRange(tt.id)
 			if result != tt.expected {
 				t.Errorf("IsRange(%d) = %v, expected %v", tt.id, result, tt.expected)
 			}

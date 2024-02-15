@@ -39,7 +39,7 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !utilities.IsRange(idd) {
+	if !utilities.IsInRange(idd) {
 		errHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}

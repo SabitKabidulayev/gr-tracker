@@ -15,7 +15,7 @@ func IsValid(id string) bool {
 	return true
 }
 
-func IsRange(id int) bool {
+func IsInRange(id int) bool {
 	if id < 1 || id > 52 {
 		return false
 	}
