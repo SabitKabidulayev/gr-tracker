@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"groupie-tracker/backend/data"
 	"groupie-tracker/backend/handlers"
+	"groupie-tracker/backend/utilities"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -96,7 +97,7 @@ type TestData struct {
 	Email string `json:"email"`
 }
 
-func TestGetData(t *testing.T) {
+func TestFetchData(t *testing.T) {
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		mockData := TestData{Name: "John Doe", Email: "john@example.com"}
 		mockBody, _ := json.Marshal(mockData)
@@ -131,7 +132,7 @@ func TestIsValid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.id, func(t *testing.T) {
-			result := data.IsValid(tt.id)
+			result := utilities.IsValid(tt.id)
 			if result != tt.expected {
 				t.Errorf("IsValid(%s) = %v, expected %v", tt.id, result, tt.expected)
 			}
@@ -151,7 +152,7 @@ func TestIsRange(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(strconv.Itoa(tt.id), func(t *testing.T) {
-			result := data.IsRange(tt.id)
+			result := utilities.IsRange(tt.id)
 			if result != tt.expected {
 				t.Errorf("IsRange(%d) = %v, expected %v", tt.id, result, tt.expected)
 			}

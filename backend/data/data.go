@@ -9,7 +9,6 @@ import (
 	"io"
 	"net/http"
 	"strconv"
-	"unicode"
 )
 
 // объявляем переменную Artist - массив в котором хранятся структуры типа models.Artist (данную структуру мы обозначили в пакете models) для хранения информации о всех артистах
@@ -69,31 +68,4 @@ func GetDataForArtist(id int) error {
 
 	// если во время использования функции FetchDataFromJSON не произошло никаких ошибок возвращаем nil
 	return nil
-}
-
-func IsValid(id string) bool {
-	if id == "" {
-		return false
-	}
-	for _, char := range id {
-		if !unicode.IsDigit(char) {
-			return false
-		}
-	}
-
-	return true
-}
-
-func IsRange(id int) bool {
-	if id < 1 || id > 52 {
-		return false
-	}
-	return true
-}
-
-func ContainsZero(id string) bool {
-	if id[0] == '0' {
-		return true
-	}
-	return false
 }

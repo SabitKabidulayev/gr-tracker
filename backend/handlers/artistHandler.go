@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"groupie-tracker/backend/data"
+	"groupie-tracker/backend/utilities"
 	"log"
 	"net/http"
 	"strconv"
@@ -21,12 +22,12 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 
 	id := r.URL.Query().Get("id")
 
-	if !data.IsValid(id) {
+	if !utilities.IsValid(id) {
 		errHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	if data.ContainsZero(id) {
+	if utilities.ContainsZero(id) {
 		errHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
@@ -38,7 +39,7 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !data.IsRange(idd) {
+	if !utilities.IsRange(idd) {
 		errHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
