@@ -1,6 +1,9 @@
 package utilities
 
-import "unicode"
+import (
+	"groupie-tracker/backend/data"
+	"unicode"
+)
 
 func IsValid(id string) bool {
 	if id == "" {
@@ -16,7 +19,7 @@ func IsValid(id string) bool {
 }
 
 func IsInRange(id int) bool {
-	if id < 1 || id > 52 {
+	if id < 1 || id > len(data.Artists) {
 		return false
 	}
 	return true

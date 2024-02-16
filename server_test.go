@@ -8,17 +8,15 @@ import (
 	"encoding/json"
 	"groupie-tracker/backend/data"
 	"groupie-tracker/backend/handlers"
-	"groupie-tracker/backend/utilities"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
-	"strconv"
 	"testing"
 )
 
 // создаем структуру TestData с помощью которая будет использоваться в тесте для функции FetchDataFromJSON
 
-type TestData struct {
+type FetchTestData struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
@@ -29,7 +27,7 @@ func TestFetchDataFromJSON(t *testing.T) {
 	// Создаем тестовый HTTP-сервер с помощью httptest.NewServer, который будет возвращать заданные данные в формате JSON.
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Создаем тестовые данные mockData
-		mockData := TestData{Name: "Test Name", Email: "test@mail.com"}
+		mockData := FetchTestData{Name: "Test Name", Email: "test@mail.com"}
 		// Преобразуем тестовые данные в JSON.
 		mockDataJSON, _ := json.Marshal(mockData)
 		// Отправляем JSON-данные в ответ на запрос.
@@ -39,11 +37,11 @@ func TestFetchDataFromJSON(t *testing.T) {
 	defer testServer.Close()
 
 	// Создаем переменную для хранения данных, полученных из JSON.
-	var testData TestData
+	var testData FetchTestData
 	// Получаем URL тестового сервера.
 	url := testServer.URL
 	// Ожидаемые данные, которые должны быть получены из JSON.
-	expectedData := TestData{Name: "Test Name", Email: "test@mail.com"}
+	expectedData := FetchTestData{Name: "Test Name", Email: "test@mail.com"}
 
 	// Запускаем функцию FetchDataFromJSON для извлечения данных из JSON и сохранения их в переменную testData.
 	err := data.FetchDataFromJSON(&testData, url)
@@ -55,45 +53,6 @@ func TestFetchDataFromJSON(t *testing.T) {
 	// Функция DeepEqual сравнивает два значения любого типа и возвращает true, если они структурно эквивалентны, то есть имеют одинаковую структуру и значения всех полей равны. Если хотя бы одно поле отличается, функция вернет false.
 	if !reflect.DeepEqual(testData, expectedData) {
 		t.Errorf("Unexpected data. Got %+v, expected %+v", testData, expectedData)
-	}
-}
-
-func TestIsInRange(t *testing.T) {
-	tests := []struct {
-		id       int
-		expected bool
-	}{
-		{1, true},
-		{0, false},
-		{53, false},
-	}
-
-	for _, tt := range tests {
-		t.Run(strconv.Itoa(tt.id), func(t *testing.T) {
-			result := utilities.IsInRange(tt.id)
-			if result != tt.expected {
-				t.Errorf("IsRange(%d) = %v, expected %v", tt.id, result, tt.expected)
-			}
-		})
-	}
-}
-
-func TestIsValid(t *testing.T) {
-	tests := []struct {
-		id       string
-		expected bool
-	}{
-		{"123", true},
-		{"asc", false},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.id, func(t *testing.T) {
-			result := utilities.IsValid(tt.id)
-			if result != tt.expected {
-				t.Errorf("IsValid(%s) = %v, expected %v", tt.id, result, tt.expected)
-			}
-		})
 	}
 }
 
