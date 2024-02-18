@@ -88,4 +88,4 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// последняя часть backend это тесты, переходи в unit_test.go
+// переходи в cmd/main.go
