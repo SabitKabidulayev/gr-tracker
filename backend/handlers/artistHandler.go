@@ -25,46 +25,63 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Извлекаем идентификатор артиста из параметра запроса.
-	id := r.URL.Query().Get("id")
+	// Извлекаем id артиста из параметра запроса.
+	idString := r.URL.Query().Get("id")
 
-	// Проверяем, что идентификатор артиста содержит только цифры (здесь используется функция IsValid которую мы задаем в пакете utilities backend/utilities/utilities.go пройди туда, там объяснено как они работают)
-	if !utilities.IsValid(id) {
+	// Проверяем, что id содержит только цифры (здесь используется функция IsValid и StartsWithZero которую мы задаем в пакете utilities backend/utilities/utilities.go пройди туда, там объяснено как они работают)
+	// Иначе возвращаем ошибку 400 "Bad request"  с помощью обработчика ошибки
+	if !utilities.IsValid(idString) {
+		ErrorPage(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+	// Проверяем, что id не начинается с нуля.
+	// Иначе возвращаем ошибку 400 "Bad request" с помощью обработчика ошибки
+	if utilities.StartsWithZero(idString) {
 		ErrorPage(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	if utilities.StartsWithZero(id) {
+	// Преобразуем id в число.
+	idInt, err := strconv.Atoi(idString)
+	// Если произошла ошибка при преобразовании возвращаем ошибку 400 "Bad request"  с помощью обработчика ошибки
+	if err != nil {
 		ErrorPage(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	idd, err := strconv.Atoi(id)
-
+	// Получаем данные из удаленного JSON-файла (с помощью функции FetchDataFromJSON из пакетв data) и сохраняем их в структуру data.Artists
 	err = data.FetchDataFromJSON(&data.Artists, "https://groupietrackers.herokuapp.com/api/artists")
+	// Если произошла ошибка при получении данных, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		ErrorPage(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
 
-	if !utilities.IsInRange(idd) {
+	// Проверяем, что id группы находится в допустимом диапазоне. (функция IsInRange которую мы задаем в пакете utilities backend/utilities/utilities.go)
+	if !utilities.IsInRange(idInt) {
 		ErrorPage(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
 
-	err = data.GetDataForArtist(idd)
+	// Получаем данные о группе по ее id. (функция GetDataForArtist из пакета data)
+	err = data.GetDataForArtist(idInt)
+	// Если произошла ошибка при получении данных, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		ErrorPage(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
 
+	// Парсим HTML шаблон для страницы группы
 	t, err := template.ParseFiles("frontend/html/artist.html")
+	// Если произошла ошибка при парсинге шаблона, записываем ее в лог, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		log.Println(err)
 		ErrorPage(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
-	err = t.Execute(w, data.Artists[idd-1])
+	// Вставляем данные из data.Artists[idInt-1] в HTML шаблон и отправляем результат клиенту. Поскольку массивы индексируются с нуля, нам нужно вычесть 1 из idInt, чтобы получить правильный индекс в массиве.)
+	err = t.Execute(w, data.Artists[idInt-1])
+	// Если произошла ошибка при выполнении шаблона, возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		http.Error(w, "Error executin file", http.StatusInternalServerError)
 		return
