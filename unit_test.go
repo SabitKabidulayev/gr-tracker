@@ -56,81 +56,90 @@ func TestFetchDataFromJSON(t *testing.T) {
 	}
 }
 
-func TestHomeHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/", nil)
-	if err != nil {
-		t.Fatal(err)
+// этот тест проверяет, что наши обработчики правильно обрабатывают различные HTTP-методы
+func TestHandlers_Methods(t *testing.T) {
+	// Определение тестовых случаев: URL и соответствующий HTTP-метод
+	testCases := []struct {
+		url    string
+		method string
+	}{
+		{"/", "GET"},
+		{"/", "POST"},
+		{"/", "PUT"},
+		{"/", "DELETE"},
+		{"/", "PATCH"},
+		{"/artist/?id=1", "GET"},
+		{"/artist/?id=1", "POST"},
+		{"/artist/?id=1", "PUT"},
+		{"/artist/?id=1", "DELETE"},
+		{"/artist/?id=1", "PATCH"},
 	}
+	// Для каждого тестового случая...
+	for _, tc := range testCases {
+		req, err := http.NewRequest(tc.method, tc.url, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// Создание тестового recorder для записи ответа от обработчика
+		rr := httptest.NewRecorder()
 
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.IndexPage)
+		// Определение обработчика, который будет использоваться в зависимости от URL-адреса
+		var handler http.Handler
+		if tc.url == "/" {
+			handler = http.HandlerFunc(handlers.IndexPage)
+		} else {
+			handler = http.HandlerFunc(handlers.ArtistPage)
+		}
 
-	handler.ServeHTTP(rr, req)
+		// Выполнение HTTP-запроса и запись ответа в recorder
+		handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("Home handler returned wrong status code. Got %v, want %v", status, http.StatusOK)
+		// Ожидаемый HTTP status code: http.StatusOK для GET, иначе http.StatusMethodNotAllowed
+		expectedStatusCode := http.StatusMethodNotAllowed
+		if tc.method == "GET" {
+			expectedStatusCode = http.StatusOK
+		}
+		// Проверка соответствия фактического HTTP status code ожидаемому
+		if status := rr.Code; status != expectedStatusCode {
+			t.Errorf("%s request to %s returned wrong status code. Got %v, want %v", tc.method, tc.url, status, expectedStatusCode)
+		}
 	}
 }
 
-func TestHomeHandler_NotFound(t *testing.T) {
+// этот тест проверяет, что indexHandler правильно обрабатывает запросы к несуществующим страницам
+func TestIndexHandler_NotFound(t *testing.T) {
+	// Создание HTTP-запроса для доступа к несуществующему URL-адресу
 	req, err := http.NewRequest("GET", "/notfound", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	// Создание тестового recorder для записи ответа от обработчика
 	rr := httptest.NewRecorder()
+	// Выполнение HTTP-запроса и запись ответа в recorder
 	handler := http.HandlerFunc(handlers.IndexPage)
-
 	handler.ServeHTTP(rr, req)
 
+	// Проверка, что фактический HTTP status code соответствует ожидаемому коду 404 (http.StatusNotFound)
 	if status := rr.Code; status != http.StatusNotFound {
 		t.Errorf("Home handler returned wrong status code. Got %v, want %v", status, http.StatusNotFound)
 	}
 }
 
-func TestHomeHandler_MethodNotAllowed(t *testing.T) {
-	req, err := http.NewRequest("POST", "/", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.IndexPage)
-
-	handler.ServeHTTP(rr, req)
-
-	if status := rr.Code; status != http.StatusMethodNotAllowed {
-		t.Errorf("Home handler returned wrong status code. Got %v, want %v", status, http.StatusMethodNotAllowed)
-	}
-}
-
-func TestArtistPageHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/artist/?id=1", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.ArtistPage)
-
-	handler.ServeHTTP(rr, req)
-
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("ArtistPage handler returned wrong status code. Got %v, want %v", status, http.StatusOK)
-	}
-}
-
+// этот тест проверяет, что artistHandler правильно обрабатывает запросы c неправильным id
 func TestArtistPageHandler_InvalidID(t *testing.T) {
+	// Создание HTTP-запроса с неправильным ID
 	req, err := http.NewRequest("GET", "/artist/?id=invalid", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	// Создание тестового recorder для записи ответа от обработчика
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.ArtistPage)
 
+	// Выполнение HTTP-запроса и запись ответа в recorder
+	handler := http.HandlerFunc(handlers.ArtistPage)
 	handler.ServeHTTP(rr, req)
 
+	// Проверка, что фактический HTTP status code соответствует ожидаемому коду 400 (http.StatusBadRequest)
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("ArtistPage handler returned wrong status code. Got %v, want %v", status, http.StatusBadRequest)
 	}
