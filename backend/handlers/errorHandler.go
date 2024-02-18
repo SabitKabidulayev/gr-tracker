@@ -6,13 +6,13 @@ import (
 	"text/template"
 )
 
-type ErrorPage struct {
+type ErrorStruct struct {
 	StatusCode string
 	StatusText string
 }
 
-func ErrHandler(w http.ResponseWriter, r *http.Request, statusCode int, statusText string) {
-	data := ErrorPage{
+func ErrorPage(w http.ResponseWriter, r *http.Request, statusCode int, statusText string) {
+	data := ErrorStruct{
 		StatusCode: fmt.Sprint(statusCode),
 		StatusText: statusText,
 	}

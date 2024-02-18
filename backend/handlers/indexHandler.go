@@ -23,14 +23,14 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
 	// Проверяем, что URL запроса соответствует корневому пути "/"
 	// Если URL не корневой, вызываем обработчик ошибки и возвращаем ошибку 404 "Страница не найдена"
 	if r.URL.Path != "/" {
-		ErrHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
+		ErrorPage(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
 
 	// Проверяем, что метод запроса - GET
 	// Если метод запроса не GET, вызываем обработчик ошибки и возвращаем ошибку 405 "Метод не разрешен"
 	if r.Method != http.MethodGet {
-		ErrHandler(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+		ErrorPage(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		return
 	}
 
@@ -39,7 +39,7 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
 	// Если произошла ошибка при парсинге шаблона, записываем ее в лог, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		log.Println(err)
-		ErrHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		ErrorPage(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
 
@@ -47,7 +47,7 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
 	err = data.FetchDataFromJSON(&data.Artists, "https://groupietrackers.herokuapp.com/api/artists")
 	// Если произошла ошибка при получении данных, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
-		ErrHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		ErrorPage(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
 
