@@ -70,4 +70,4 @@ func GetDataForArtist(id int) error {
 	return nil
 }
 
-// дальше переходи в backend/handlers/indexHandler.go
+// дальше переходи в backend/handlers/errorHandler.go

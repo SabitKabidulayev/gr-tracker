@@ -7,7 +7,7 @@ package handlers
 // PUT: Запрос на обновление существующих данных на сервере
 // DELETE: Запрос на удаление данных на сервере
 // PATCH: Запрос на частичное обновление данных на сервере
-// в нашем случае все хэндлеры работают только с GET запросами (в случае других запосов будет выведена ошибка MethodNotAllowed)
+// в нашем случае все indexHandler работает только с GET запросами (в случае других запосов будет выводится ошибка MethodNotAllowed)
 
 import (
 	"groupie-tracker/backend/data"
@@ -59,3 +59,5 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+// дальше переходи в backend/handlers/artistHandler.go
