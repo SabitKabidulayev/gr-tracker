@@ -24,8 +24,10 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	// Выводим сообщение в лог о начале работы сервера
-	log.Println("Starting server on http://localhost:8000")
+	log.Println("Starting server on http://localhost:8080")
 
 	// Запускаем HTTP-сервер на порту 8080, используя созданный маршрутизатор mux для обработки запросов
 	http.ListenAndServe(":8080", mux)
 }
+
+// последняя часть backend это тесы, находятся в unit_test.go

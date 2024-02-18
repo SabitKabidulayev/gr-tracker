@@ -72,7 +72,7 @@ func ArtistPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Парсим HTML шаблон для страницы группы
-	t, err := template.ParseFiles("frontend/html/artist.html")
+	t, err := template.ParseFiles("frontend/templates/artistPage.html")
 	// Если произошла ошибка при парсинге шаблона, записываем ее в лог, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		log.Println(err)

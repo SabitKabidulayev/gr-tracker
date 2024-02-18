@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Name}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container header-container">
+            <a class="main-title" href="/">Groupie-tracker</a>
+        </header>
+        <main class="container main-container">
+            <div class="artist-info">
+                <div class="cover-and-name">
+                    <img class="cover" src="{{.Image}}" alt="{{.Name}}">
+                    <h1 class="name">
+                        {{.Name}}
+                    </h1>
+                </div>
+                <div class="other-info">
+                    <div>
+                        <h2>CREATION DATE:</h2>
+                        <p>{{.CreationDate}}</p>
+                        <h2>FIRST ALBUM:</h2>
+                        <p>{{.FirstAlbum}}</p>
+                    </div>
+                    <div>
+                        <h2>MEMBERS:</h2>
+                        <ul>
+                            {{range .Members}}
+                            <li>{{.}}</li>
+                            {{end}}
+                        </ul>       
+                    </div>
+                    <div>
+                        <h2>CONCERT DATES:</h2>
+                        {{with .Relations.DatesLocations}}
+                            {{range $location, $dates := .}}
+                                <div>
+                                    <h3>{{$location}}:</h3>
+                                    <ul>
+                                    {{range $dates}}
+                                        <li>{{.}}</li>
+                                    {{end}}
+                                    </ul>
+                                </div>
+                            {{end}}
+                        {{else}}
+                            <p>No upcoming concerts available</p>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="container footer-container">
+            <div class="back-to-top">
+                <a class="back-to-top-link" href="/">Back to main page</a>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

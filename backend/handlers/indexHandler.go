@@ -35,7 +35,7 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Парсим HTML шаблон для домашней страницы
-	t, err := template.ParseFiles("frontend/html/index.html")
+	t, err := template.ParseFiles("frontend/templates/indexPage.html")
 	// Если произошла ошибка при парсинге шаблона, записываем ее в лог, вызываем обработчик ошибки и возвращаем ошибку 500 "Внутренняя ошибка сервера"
 	if err != nil {
 		log.Println(err)

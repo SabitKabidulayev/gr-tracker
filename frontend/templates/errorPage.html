@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container header-container">
+            <a class="main-title" href="/">Groupie-tracker</a>
+        </header>
+        <main class="container main-container">
+            <div class="error-wrapper">
+                <div class="error">
+                    <h1>Error {{.StatusCode}}</h1>
+                    <p>{{.StatusText}}</p>
+                </div>
+            </div>
+        </main>
+        <footer class="container footer-container">
+            <div class="back-to-top">
+                <a class="back-to-top-link" href="/">Back to main page</a>
+            </div>
+        </footer>
+    </div>   
+</body>
+</html>

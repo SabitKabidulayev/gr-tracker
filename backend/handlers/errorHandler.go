@@ -25,7 +25,7 @@ func ErrorPage(w http.ResponseWriter, r *http.Request, statusCode int, statusTex
 	}
 
 	// Парсинг HTML шаблона страницы ошибок из файла "errpage.html".
-	t, err := template.ParseFiles("./frontend/html/errpage.html")
+	t, err := template.ParseFiles("./frontend/templates/errorPage.html")
 	// Если произошла ошибка при парсинге шаблона, отправляем клиенту статус 500 "Внутренняя ошибка сервера".
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
