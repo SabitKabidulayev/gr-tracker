@@ -11,7 +11,7 @@ type ErrorPage struct {
 	StatusText string
 }
 
-func errHandler(w http.ResponseWriter, r *http.Request, statusCode int, statusText string) {
+func ErrHandler(w http.ResponseWriter, r *http.Request, statusCode int, statusText string) {
 	data := ErrorPage{
 		StatusCode: fmt.Sprint(statusCode),
 		StatusText: statusText,

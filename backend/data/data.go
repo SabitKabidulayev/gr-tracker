@@ -69,3 +69,5 @@ func GetDataForArtist(id int) error {
 	// если во время использования функции FetchDataFromJSON не произошло никаких ошибок возвращаем nil
 	return nil
 }
+
+// дальше переходи в backend/handlers/indexHandler.go

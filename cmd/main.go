@@ -9,7 +9,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handlers.Home)
+	mux.HandleFunc("/", handlers.IndexPage)
 	mux.HandleFunc("/artist/", handlers.ArtistPage)
 
 	fileServer := http.FileServer(http.Dir("frontend/css"))

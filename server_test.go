@@ -63,7 +63,7 @@ func TestHomeHandler(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.Home)
+	handler := http.HandlerFunc(handlers.IndexPage)
 
 	handler.ServeHTTP(rr, req)
 
@@ -79,7 +79,7 @@ func TestHomeHandler_NotFound(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.Home)
+	handler := http.HandlerFunc(handlers.IndexPage)
 
 	handler.ServeHTTP(rr, req)
 
@@ -95,7 +95,7 @@ func TestHomeHandler_MethodNotAllowed(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.Home)
+	handler := http.HandlerFunc(handlers.IndexPage)
 
 	handler.ServeHTTP(rr, req)
 
