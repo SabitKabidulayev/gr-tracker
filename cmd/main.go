@@ -30,4 +30,4 @@ func main() {
 	http.ListenAndServe(":8080", mux)
 }
 
-// последняя часть backend это тесы, находятся в unit_test.go
+// последняя часть backend это тесы, находятся в unit_test.go и html templates (frontend/templates/)
