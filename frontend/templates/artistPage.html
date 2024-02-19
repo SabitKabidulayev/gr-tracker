@@ -18,37 +18,46 @@
                 <div class="cover-and-name">
                     <img class="cover" src="{{.Image}}" alt="{{.Name}}">
                     <h1 class="name">
-                        {{.Name}}
+                        <!-- берется из структуры data.Artists[idInt-1] по полю .Name -->
+                        {{.Name}} 
                     </h1>
                 </div>
                 <div class="other-info">
                     <div>
                         <h2>CREATION DATE:</h2>
+                        <!-- берется из структуры data.Artists[idInt-1] по полю .CreationDate -->
                         <p>{{.CreationDate}}</p>
                         <h2>FIRST ALBUM:</h2>
+                        <!-- берется из структуры data.Artists[idInt-1] по полю .FirstAlbum -->
                         <p>{{.FirstAlbum}}</p>
                     </div>
                     <div>
                         <h2>MEMBERS:</h2>
                         <ul>
+                            <!-- цикл проходится по каждому элементу из data.Artists[idInt-1].Members -->
                             {{range .Members}}
+                            <!-- создается пункт в списке с текстом равным текущему элементу списка Members -->
                             <li>{{.}}</li>
                             {{end}}
                         </ul>       
                     </div>
                     <div>
                         <h2>CONCERT DATES:</h2>
+                         <!-- Начало блока кода, выполняемого только в случае наличия данных о датах и местоположениях -->
                         {{with .Relations.DatesLocations}}
+                             <!-- Цикл для итерации по парам "местоположение - даты" -->
                             {{range $location, $dates := .}}
                                 <div>
                                     <h3>{{$location}}:</h3>
                                     <ul>
+                                      <!-- Вложенный цикл для итерации по датам концертов -->
                                     {{range $dates}}
                                         <li>{{.}}</li>
                                     {{end}}
                                     </ul>
                                 </div>
                             {{end}}
+                        <!-- Блок кода, выполняемого в случае отсутствия данных о датах и местоположениях -->
                         {{else}}
                             <p>No upcoming concerts available</p>
                         {{end}}

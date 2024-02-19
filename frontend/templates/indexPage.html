@@ -15,12 +15,16 @@
         </header>
         <main class="container main-container">
             <div class="artists-list">
-                {{range . }}
+                <!-- Этот тег начинает цикл,  и проходится по каждому элементу в списке данных (data.Artists которые мы отправляем в шаблон в indexHandler.go) -->
+                {{range . }} 
+                  <!-- для каждого элемента создается ссылка-карточка с изображением и именем группы (они вытаскиваются из текущей структуры с помощью поля  .Image и .Name соответственно)) -->
+                  <!-- эта ссылка ведет на страницу /artist?id={{.Id}} где .Id это поле .Id из текущей структуры Artist)) -->
                 <a class="artist-card" href="/artist?id={{.Id}}">
                     <img class="artist-image" src="{{ .Image}}" alt="{{.Name}}">
                     <p class="artist-name">{{.Name }}</p>
                 </a>
-                {{end}}
+                <!-- завершает цикл -->
+                {{end}} 
             </div>
             <div class="back-to-top">
                 <a class="back-to-top-link" href="#top">Go to Top</a>
