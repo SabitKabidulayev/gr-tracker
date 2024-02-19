@@ -21,10 +21,10 @@ This data is used to build a website which allows users to access the informatio
 go run ./cmd 
 ```
 
-Follow the link on the terminal:
+Follow the link in the terminal (ctrl + left mouse button):
 
 ```
-Starting server on http://localhost:4040
+Starting server on http://localhost:8080
 ```
 
 ### Run tests:
